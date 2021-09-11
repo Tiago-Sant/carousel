@@ -1,28 +1,45 @@
 const imgs = document.getElementById('img')
-const img = document.querySelectorAll('#img img');
+const img = document.querySelectorAll('#img img')
 const first = document.getElementById('first')
 const second = document.getElementById('second')
 const third = document.getElementById('third')
 const fourth = document.getElementById('fourth')
+const back = document.getElementById('back')
+const next = document.getElementById('next')
+
+let pass = true
+
+let i = 0
+activeClass(first)
+
 
 function carousel() {
-  i++
 
-  if (i > img.length - 1) {
-    i = 0
+  if (pass) {
+    i++
+
+
+    if (i > img.length - 1) {
+      i = 0
+    }
+    transform()
+
+    ballColor()
+  } else {
+    pass = true
   }
 
-  changeOnclick()
 
-  transform()
-
-  ballColor()
 }
 
 setInterval(carousel, 4000)
 
-let i = 0
-activeClass(first)
+backOnCLick()
+
+nextOnCLick()
+
+changeOnclick()
+
 
 function changeOnclick() {
   addClassOnCLick(first, 0)
@@ -32,7 +49,9 @@ function changeOnclick() {
   addClassOnCLick(third, 2)
 
   addClassOnCLick(fourth, 3)
+
 }
+
 
 function addClassOnCLick(span, number) {
   span.addEventListener('click', () => {
@@ -40,6 +59,40 @@ function addClassOnCLick(span, number) {
     transform()
     remove()
     activeClass(span)
+    pass = false
+  })
+}
+
+function backOnCLick() {
+  back.addEventListener('click', () => {
+    i -= 1
+
+    if (i < 0) {
+      i = 3
+    }
+
+    transform()
+
+    ballColor(i)
+
+    pass = false
+  })
+}
+
+function nextOnCLick(number) {
+  next.addEventListener('click', () => {
+    i += 1
+
+    if (i > 3) {
+      i = 0
+    }
+
+    transform()
+
+    ballColor(i)
+
+    pass = false
+
   })
 }
 

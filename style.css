@@ -79,6 +79,30 @@ span {
   margin: 20px;
 }
 
+#back,
+#next {
+  color: #0059ff95;
+  font-size: 20px;
+  background-color: #111;
+  width: 70px;
+  padding: auto;
+  transform: translateY(-5px);
+}
+
+#back {
+  text-align: end;
+}
+
+#back:hover,
+#next:hover {
+  color: #639aff;
+}
+
+#back:active,
+#next:active {
+  color: #fafafa;
+}
+
 .active {
   background-color: #0059ff95;
 }
