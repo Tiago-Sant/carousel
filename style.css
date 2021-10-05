@@ -93,6 +93,7 @@ span {
   text-align: end;
 }
 
+span:hover,
 #back:hover,
 #next:hover {
   color: #639aff;
