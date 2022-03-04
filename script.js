@@ -109,7 +109,7 @@ function activeClass(span) {
   span.classList.add('active')
 }
 
-function ballColor() {
+function ballColor(i) {
 
   switch (i) {
     case 0:
