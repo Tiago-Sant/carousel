@@ -109,9 +109,9 @@ function activeClass(span) {
   span.classList.add('active')
 }
 
-function ballColor() {
+function ballColor(indexNumber) {
 
-  switch (i) {
+  switch (indexNumber) {
     case 0:
       remove()
       activeClass(first)
