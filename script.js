@@ -24,7 +24,7 @@ function carousel() {
     }
     transform()
 
-    ballColor()
+    ballColor(i)
   } else {
     pass = true
   }
