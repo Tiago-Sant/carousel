@@ -1,141 +1,107 @@
-const imgs = document.getElementById('img')
-const img = document.querySelectorAll('#img img')
+const imgsWrapper = document.getElementById('img-wrapper')
+const img = document.querySelectorAll('#img-wrapper img')
 const first = document.getElementById('first')
 const second = document.getElementById('second')
 const third = document.getElementById('third')
 const fourth = document.getElementById('fourth')
 const back = document.getElementById('back')
 const next = document.getElementById('next')
+const widthOfImages = img[0].offsetWidth
 
-let pass = true
+let lastActive
+let canPass = true
 
-let i = 0
+let indexOfBallActive = 0
 activeClass(first)
 
+const ballOfIndex = {
+  0: first,
+  1: second,
+  2: third,
+  3: fourth
+}
 
-function carousel() {
+function activeCarousel() {
+  if (canPass) {
+    lastActive = ballOfIndex[indexOfBallActive]
+    indexOfBallActive++
 
-  if (pass) {
-    i++
 
-
-    if (i > img.length - 1) {
-      i = 0
+    if (indexOfBallActive > img.length - 1) {
+      indexOfBallActive = 0
     }
     transform()
-
-    ballColor()
+    
+    remove()
+    activeClass(ballOfIndex[indexOfBallActive])
   } else {
-    pass = true
+    canPass = true
   }
-
-
 }
 
-setInterval(carousel, 4000)
+setInterval(activeCarousel, 4000)
 
-backOnCLick()
+back.addEventListener('click', backOnCLick)
 
-nextOnCLick()
+next.addEventListener('click', nextOnCLick)
 
-changeOnclick()
+addClassOnCLick(first, 0)
 
+addClassOnCLick(second, 1)
 
-function changeOnclick() {
-  addClassOnCLick(first, 0)
+addClassOnCLick(third, 2)
 
-  addClassOnCLick(second, 1)
-
-  addClassOnCLick(third, 2)
-
-  addClassOnCLick(fourth, 3)
-
-}
-
+addClassOnCLick(fourth, 3)
 
 function addClassOnCLick(span, number) {
-  span.addEventListener('click', () => {
-    i = number
+    span.addEventListener('click', () => {
+    lastActive = ballOfIndex[indexOfBallActive]
+    indexOfBallActive = number
     transform()
     remove()
     activeClass(span)
-    pass = false
+    canPass = false
   })
 }
 
 function backOnCLick() {
-  back.addEventListener('click', () => {
-    i -= 1
+    lastActive = ballOfIndex[indexOfBallActive]
+    indexOfBallActive -= 1
 
-    if (i < 0) {
-      i = 3
+    if (indexOfBallActive < 0) {
+      indexOfBallActive = 3
     }
 
     transform()
+  
+    remove()
+    activeClass(ballOfIndex[indexOfBallActive])
 
-    ballColor(i)
-
-    pass = false
-  })
+    canPass = false 
 }
 
-function nextOnCLick(number) {
-  next.addEventListener('click', () => {
-    i += 1
+function nextOnCLick() {
+    lastActive = ballOfIndex[indexOfBallActive]
+    indexOfBallActive += 1
 
-    if (i > 3) {
-      i = 0
+    if (indexOfBallActive > 3) {
+      indexOfBallActive = 0
     }
 
     transform()
+  
+    remove()
+    activeClass(ballOfIndex[indexOfBallActive])  
 
-    ballColor(i)
-
-    pass = false
-
-  })
+    canPass = false
 }
 
-const transform = () => imgs.style.transform = `translateX(${-i * 850}px)`
+const transform = () => imgsWrapper.style.transform = `translateX(${-indexOfBallActive * widthOfImages}px)`
 
 function remove() {
-  first.classList.remove('active')
-  second.classList.remove('active')
-  third.classList.remove('active')
-  fourth.classList.remove('active')
+  lastActive.classList.remove('active')
 }
 
 function activeClass(span) {
   span.classList.add('active')
 }
-
-function ballColor(i) {
-
-  switch (i) {
-    case 0:
-      remove()
-      activeClass(first)
-      break;
-
-    case 1:
-      remove()
-      activeClass(second)
-      break;
-
-    case 2:
-      remove()
-      activeClass(third)
-
-      break;
-
-    case 3:
-      remove()
-      activeClass(fourth)
-
-      break;
-    default: remove()
-      break;
-  }
-
-}
-
