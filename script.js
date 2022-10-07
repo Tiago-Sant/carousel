@@ -13,7 +13,6 @@ let canPass = true
 
 let indexOfBallActive = 0
 activeClass(first)
-
 const ballOfIndex = {
   0: first,
   1: second,
@@ -25,7 +24,6 @@ function activeCarousel() {
   if (canPass) {
     lastActive = ballOfIndex[indexOfBallActive]
     indexOfBallActive++
-
 
     if (indexOfBallActive > img.length - 1) {
       indexOfBallActive = 0
