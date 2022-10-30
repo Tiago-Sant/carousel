@@ -6,13 +6,33 @@ const third = document.getElementById('third')
 const fourth = document.getElementById('fourth')
 const back = document.getElementById('back')
 const next = document.getElementById('next')
-const widthOfImages = img[0].offsetWidth
 
-let lastActive
+let widthOfImages = img[0].offsetWidth
+let currentDevice = window.innerWidth > 850 ? "desktop" : "mobile"
+
+let lastActive, startDrag
 let canPass = true
+
+const devices = {
+  mobile: () => {
+    if (window.innerWidth > 850) {
+      widthOfImages = img[0].offsetWidth
+      changeSlide()
+      currentDevice = "desktop"
+    }
+  },
+  desktop: () => {
+    if (window.innerWidth < 850) {
+      widthOfImages = img[0].offsetWidth
+      changeSlide()
+      currentDevice = "mobile"
+    }
+  }
+}
 
 let indexOfBallActive = 0
 activeClass(first)
+
 const ballOfIndex = {
   0: first,
   1: second,
@@ -28,8 +48,8 @@ function activeCarousel() {
     if (indexOfBallActive > img.length - 1) {
       indexOfBallActive = 0
     }
-    transform()
-    
+    changeSlide()
+
     remove()
     activeClass(ballOfIndex[indexOfBallActive])
   } else {
@@ -39,9 +59,9 @@ function activeCarousel() {
 
 setInterval(activeCarousel, 4000)
 
-back.addEventListener('click', backOnCLick)
+back.addEventListener('click', changeSlideToBack)
 
-next.addEventListener('click', nextOnCLick)
+next.addEventListener('click', changeSlideToNext)
 
 addClassOnCLick(first, 0)
 
@@ -51,50 +71,61 @@ addClassOnCLick(third, 2)
 
 addClassOnCLick(fourth, 3)
 
+imgsWrapper.addEventListener('dragstart', (event) => { startDrag = event.clientX })
+
+imgsWrapper.addEventListener('dragend', (event) => {
+  startDrag < (event.clientX - 100) && changeSlideToBack()
+  startDrag > (event.clientX + 100) && changeSlideToNext()
+})
+
+window.addEventListener("resize", function () {
+  devices[currentDevice]()
+})
+
 function addClassOnCLick(span, number) {
-    span.addEventListener('click', () => {
+  span.addEventListener('click', () => {
     lastActive = ballOfIndex[indexOfBallActive]
     indexOfBallActive = number
-    transform()
+    changeSlide()
     remove()
     activeClass(span)
     canPass = false
   })
 }
 
-function backOnCLick() {
-    lastActive = ballOfIndex[indexOfBallActive]
-    indexOfBallActive -= 1
+function changeSlideToBack() {
+  lastActive = ballOfIndex[indexOfBallActive]
+  indexOfBallActive -= 1
 
-    if (indexOfBallActive < 0) {
-      indexOfBallActive = 3
-    }
+  if (indexOfBallActive < 0) {
+    indexOfBallActive = 3
+  }
 
-    transform()
-  
-    remove()
-    activeClass(ballOfIndex[indexOfBallActive])
+  changeSlide()
 
-    canPass = false 
+  remove()
+  activeClass(ballOfIndex[indexOfBallActive])
+
+  canPass = false
 }
 
-function nextOnCLick() {
-    lastActive = ballOfIndex[indexOfBallActive]
-    indexOfBallActive += 1
+function changeSlideToNext() {
+  lastActive = ballOfIndex[indexOfBallActive]
+  indexOfBallActive += 1
 
-    if (indexOfBallActive > 3) {
-      indexOfBallActive = 0
-    }
+  if (indexOfBallActive > 3) {
+    indexOfBallActive = 0
+  }
 
-    transform()
-  
-    remove()
-    activeClass(ballOfIndex[indexOfBallActive])  
+  changeSlide()
 
-    canPass = false
+  remove()
+  activeClass(ballOfIndex[indexOfBallActive])
+
+  canPass = false
 }
 
-const transform = () => imgsWrapper.style.transform = `translateX(${-indexOfBallActive * widthOfImages}px)`
+const changeSlide = () => imgsWrapper.style.transform = `translateX(${-indexOfBallActive * widthOfImages}px)`
 
 function remove() {
   lastActive.classList.remove('active')
