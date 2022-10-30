@@ -107,3 +107,26 @@ span:hover,
 .active {
   background-color: #0059ff95;
 }
+
+@media (max-width: 850px) {
+  #carousel {
+    height: 200px;
+    width: 320px;
+  }
+  img {
+    height: 200px;
+    width: 320px;
+  }
+  
+  span {
+    height: 8px;
+    width: 8px;
+    margin: 15px 7px;
+  }
+  
+  #back,
+  #next {
+    font-size: 12px;
+    margin-top: 17px
+  }
+}
